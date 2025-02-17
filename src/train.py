@@ -165,7 +165,7 @@ class Dataloader:
 
 model_path = 'microsoft/deberta-v3-small'
 
-dl = Dataloader(file_path='data/data_d.gzip', model_path=model_path)
+dl = Dataloader(file_path='data/addestramento_d.csv', model_path=model_path)
 tokenized_dataset = dl.dataset
 num_classes = dl.num_classes
 id2class = dl.id2class

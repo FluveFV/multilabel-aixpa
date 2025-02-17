@@ -1,5 +1,6 @@
 # multilabel-aixpa
 🇺🇸-🏴󠁧󠁢󠁥󠁮󠁧󠁿
+
 Multilabel classifier. Multilabel indicates that it can be trained on data with multiple labels per observation, just like "dog" can be both a mammal and a pet.
 
 #### Specifics and context
@@ -20,12 +21,14 @@ At the time of writing, this ```README``` is structured on similar tools such as
 -   [Predict labels given a new plan](./docs/howto/predict.md)
 
 🇮🇹
+
 Classificatore multietichetta. Multietichetta indica che il modello può essere addestrato su dati con molteplici etichette per osservazione, come "cane" può essere "mammifero" e "animale di compagnia". 
 
 #### Specifiche e contesto
 - `tipologia`: product-template
 - `ai`: NLP
 - `dominio`: PA
+
 Questo classificatore è stato sviluppato come una versione aggiornata capace di gestire dati multietichetta, specificamente addestrato su dati di organizzazioni che partecipano al progetto Family Audit.
 
 Questo strumento può essere usato per ogni task di classificazione. Lo script ```training.py``` si occuperà di ogni numero di etichette sui nuovi dati, solo se i dati sono formattati in un modo specifico. Una volta addestrato e data una nuova osservazione, il modello addestrato può inferire le etichette che appartengono ad essa. I dettagli per preparare i dati sono spiegati nella sezione ```How To```, incluso l'addestramento per il classificatore su nuovi dati.

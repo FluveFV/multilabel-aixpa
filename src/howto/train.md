@@ -79,16 +79,13 @@ In the custom data loader for multiple labels a specific feature turns a structu
 -   each element is at a position i from 0 to m
 -   an element is 1 if there is a correspondence between the element at position $i$ and the presence of the class, otherwise 0
 
-For example, the following observation "Dog" is labelled "Mammal" and "Pet" and is not "Reptile". 
+For example, the following observation "Dog" is labelled "Mammal" and "Pet" and is not "Reptile".
 
-The classes are ordered
-$$l_{labels} = ['Mammal', 'Pet', 'Reptile'] \rightarrow l_{classes} = [0, 1, 2]$$
+The classes are ordered $$l_{labels} = ['Mammal', 'Pet', 'Reptile'] \rightarrow l_{classes} = [0, 1, 2]$$
 
-A vector for that observation is created:
-$$v = [0, 0, 0] $$
+A vector for that observation is created: $$v = [0, 0, 0] $$
 
-The vector gets updated in correspondence to the presence of classes.
-$$ v \leftarrow [1, 1, 0] $$
+The vector gets updated in correspondence to the presence of classes. $$ v \gets [1, 1, 0] $$
 
 The hot-encoded label vector requires a special loss. In the model a Binary Cross Entropy loss is used. Binary does not refer to two classes.
 
@@ -96,17 +93,15 @@ $\ell_{BCE}=-\frac{1}{N}\sum^N_{i=1}[y_i ~ log ~ \sigma(x_i) + (1-y_i)log(1-\sig
 
 Where $x_i$ is one raw logit output of the model, $y_i$ is the true label (one hot encoded). The raw outputs get transformed to probabilities using sigmoid activation $\sigma$.
 
-The metric of evaluation for the performance is micro F1 score, weighted on the frequency of classes. 
+The metric of evaluation for the performance is micro F1 score, weighted on the frequency of classes.
 
-$$
-\text{Micro F1} = \frac{2 \times \text{Micro Precision} \times \text{Micro Recall}}{\text{Micro Precision} + \text{Micro Recall}}
-$$
+$$\text{Micro F1} = \frac{2 \times \text{Micro Precision} \times \text{Micro Recall}}{\text{Micro Precision} + \text{Micro Recall}}$$
 
 where Micro Precision and Micro Recall are defined as:
 
 $$\text{Micro Precision} = \frac{\text{TP}_1 + \text{TP}_2 + \cdots + \text{TP}_n}{\text{TP}_1 + \text{TP}_2 + \cdots + \text{TP}_n + \text{FP}_1 + \text{FP}_2 + \cdots + \text{FP}_n}$$
 
-$$\text{Micro Recall} = \frac{\text{TP}_1 + \text{TP}_2 + \cdots + \text{TP}_n}{\text{TP}_1 + \text{TP}_2 + \cdots + \text{TP}_n + \text{FN}_1 + \text{FN}_2 + \cdots + \text{FN}_n}$$ 
+$$\text{Micro Recall} = \frac{\text{TP}_1 + \text{TP}_2 + \cdots + \text{TP}_n}{\text{TP}_1 + \text{TP}_2 + \cdots + \text{TP}_n + \text{FN}_1 + \text{FN}_2 + \cdots + \text{FN}_n}$$
 
 -   $\text{TP}_i$: True Positive for class $i$
 -   $\text{FP}_i$: False Positive for class $i$
@@ -199,22 +194,19 @@ Nel dataloader fatto ad hoc per molteplici etichette, una specifica funzione ren
 -   ogni elemento è rappresentato da $1$ o $0$.
 -   un elemento è $1$ se c'è corrispondenza tra l'elemento alla posizione $i$ e la presenza di una classe nella posizione $i$, altrimenti è $0$.
 
-Ad esempio, la seguente osservazione "Fido" appartiene alla classe "Mammifero" e "Animale da compagnia" e non è "Rettile". 
+Ad esempio, la seguente osservazione "Fido" appartiene alla classe "Mammifero" e "Animale da compagnia" e non è "Rettile".
 
-Viene definito l'ordine delle classi: 
-$$l_{etichette} = ['Mammifero', 'Animale da compagnia', 'Rettile'] \rightarrow l_{classi} = [0, 1, 2]$$
+Viene definito l'ordine delle classi: $$l_{etichette} = ['Mammifero', 'Animale da compagnia', 'Rettile'] \rightarrow l_{classi} = [0, 1, 2]$$
 
-Viene creato un vettore per l'osservazione:
-$$v = [0, 0, 0] $$
+Viene creato un vettore per l'osservazione: $$v = [0, 0, 0] $$
 
-Il vettore viene aggiornato controllando quali classi sono davvero presenti per l'osservazione:
-$$ v \leftarrow [1, 1, 0] $$
+Il vettore viene aggiornato controllando quali classi sono davvero presenti per l'osservazione: $$ v \gets [1, 1, 0] $$
 
-Su una matrice di outputs è necessaria una loss speciale. Per questo problema è stata usata la Binary Cross Entropy. Binary non si riferisce a sole due classi. 
+Su una matrice di outputs è necessaria una loss speciale. Per questo problema è stata usata la Binary Cross Entropy. Binary non si riferisce a sole due classi.
 
 $$\ell_{BCE}=-\frac{1}{N}\sum^N_{i=1}[y_i ~ log ~ \sigma(x_i) + (1-y_i)log(1-\sigma(x_i)]$$
 
-Dove $x_i$ è un logit output del modello; $y_i$ sono le vere etichette (dummy). Il logit output è trasformato in probabilità usando l'attivazione sigmoidale $\sigma$. 
+Dove $x_i$ è un logit output del modello; $y_i$ sono le vere etichette (dummy). Il logit output è trasformato in probabilità usando l'attivazione sigmoidale $\sigma$.
 
 La metrica di valutazione della performance è la micro F1 score, soppesata dalla frequenza delle classi. È definita come
 
@@ -224,14 +216,13 @@ dove la MicroPrecision e la MicroRecall sono
 
 $$\text{Micro Precision} = \frac{\text{TP}_1 + \text{TP}_2 + \cdots + \text{TP}_n}{\text{TP}_1 + \text{TP}_2 + \cdots + \text{TP}_n + \text{FP}_1 + \text{FP}_2 + \cdots + \text{FP}_n}$$
 
-$$\text{Micro Recall} = \frac{\text{TP}_1 + \text{TP}_2 + \cdots + \text{TP}_n}{\text{TP}_1 + \text{TP}_2 + \cdots + \text{TP}_n + \text{FN}_1 + \text{FN}_2 + \cdots + \text{FN}_n}$$ 
+$$\text{Micro Recall} = \frac{\text{TP}_1 + \text{TP}_2 + \cdots + \text{TP}_n}{\text{TP}_1 + \text{TP}_2 + \cdots + \text{TP}_n + \text{FN}_1 + \text{FN}_2 + \cdots + \text{FN}_n}$$
 
 -   $\text{TP}_i$: True Positive per la classe $i$
 -   $\text{FP}_i$: False Positive per la classe $i$
 -   $\text{FN}_i$: False Negative per la classe $i$
 
-
-L'output delle predizioni sul test set è salvato automaticamente in un file .csv. Ogni osservazione di quel file è una lista di metriche. 
+L'output delle predizioni sul test set è salvato automaticamente in un file .csv. Ogni osservazione di quel file è una lista di metriche.
 
 # Termine addestramento
 

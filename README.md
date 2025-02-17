@@ -20,6 +20,8 @@ At the time of writing, this ```README``` is structured on similar tools such as
 -   [Train the classifier model](./howto/train.md)
 -   [Predict labels given a new plan](./howto/predict.md)
 
+
+---
 🇮🇹
 
 Classificatore multietichetta. Multietichetta indica che il modello può essere addestrato su dati con molteplici etichette per osservazione, come "cane" può essere "mammifero" e "animale di compagnia". 

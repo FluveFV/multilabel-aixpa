@@ -17,8 +17,8 @@ At the time of writing, this ```README``` is structured on similar tools such as
 ### How To
 
 -   [Preprocess corpora for training](./src/preprocess.ipynb)
--   [Train the classifier model](./docs/howto/train.md)
--   [Predict labels given a new plan](./docs/howto/predict.md)
+-   [Train the classifier model](./howto/train.md)
+-   [Predict labels given a new plan](./howto/predict.md)
 
 🇮🇹
 

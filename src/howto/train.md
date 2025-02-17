@@ -2,11 +2,9 @@
 
 Italian 🇮🇹 version below.
 
-In case of availability of new data it is advised to first check its compatibility through the specifications of [data preprocessing](https://github.com/FluveFV/faudit-classifier/blob/main/docs/howto/process.md).
+In case of availability of new data it is advised to first check its compatibility through the specifications of [data preprocessing](https://github.com/FluveFV/multilabel-aixpa/blob/main/src/howto/preprocess.ipynb).
 
-The project has been implemented in Docker. In case a proper Docker container hasn't been built, check [set-up for Docker](https://github.com/FluveFV/faudit-classifier/blob/main/docs/howto/docker.md).
-
-Simply running the default training mode can be done from command line as
+Simply running the default training mode can be done from command line using Docker. For example
 
 ``` bash
 docker run --gpus '"device=*"' --rm -ti --shm-size=32gb \
@@ -17,6 +15,8 @@ docker run --gpus '"device=*"' --rm -ti --shm-size=32gb \
 ```
 
 In the command above, the `\*` was replaced with the computing unit's ID and `dockerimagename` was also replaced with the docker image made for the purpose of training.
+
+Otherwise, the content of the script `train.py` can be ran anywhere with Python. Check for the requirements in your machine in [requirements.txt](https://github.com/FluveFV/multilabel-aixpa/blob/main/requirements.txt)
 
 The training was executed on one GPU that exists in a cluster. Only one was specified, as the model does not require exceptional computational power.
 
@@ -40,35 +40,47 @@ Or similarly, one can modify the epochs in the training arguments within the scr
 
 ``` python
 training_args = TrainingArguments(
-    output_dir='results/',
-    eval_strategy='epoch',
-    save_strategy='epoch',
-    save_total_limit=5,
-    num_train_epochs=20,  #Here
-    per_device_train_batch_size=16,
-    per_device_eval_batch_size=16,
-    gradient_accumulation_steps=2,
-    weight_decay=0.005,
+    output_dir=model_dir,
     learning_rate=1e-5,
-    lr_scheduler_type='linear',
+    per_device_train_batch_size=4,
+    per_device_eval_batch_size=4,
+    gradient_accumulation_steps=2,
+    num_train_epochs=25,
+    #max_steps=1, #D
+    weight_decay=0.005,
+    eval_strategy="epoch",
+    save_strategy="epoch",
+    logging_strategy="epoch",
+    save_total_limit=3,
     load_best_model_at_end=True,
+    #report_to=None,  #Wandb and other are excluded with this setting
+    fp16=True,
+    optim="adamw_torch_fused",
+    # parallel computing parameters (GPU)
+    #dataloader_num_workers = 4,
+    #ddp_find_unused_parameters=False,
+    #ddp_backend='nccl',
+    resume_from_checkpoint = False
 )
 ```
 
-Since the nature of the taxonomy ("ID tassonomia") includes many labels, during training the model can tend to focus on more frequent classes. To avoid this, the training is carried on with the objective to focus on all classes, and the evaluation is weighted on the inverse frequency of the classes with weighted Cross Entropy Loss.
+Since the nature of the taxonomy of the companies data includes many labels, during training the model can tend to focus on more frequent classes. To avoid this, the training is carried on with the objective to focus on all classes, and the evaluation is weighted on the inverse frequency of the classes with weighted Cross Entropy Loss.
 
 On the other hand, almost absent classes shouldn't hinder the overall evaluation on the test test, as it is expected for them to not appear as much in future input data. For this reason, while training is done to try and learn for all classes, the final evaluation on test set is done considering a weighted per-class average of correctly predicted observations - the micro F1 weighted measure. For short, the training Loss forces the model to be more influenced by smaller classes, while the performance is more influenced by the bigger classes.
 
-Thus, Cross Entropy Loss is used with
+In the custom data loader for multiple labels a specific feature turns a structured datalake into a *datasets* object with one column containing all the labels in a hot encoded format. \\In this format, each observation is associated with a vector of length $m$ where
 
--   Weights (computed on the inverse relative frequency of classes in the sample)
--   Label smoothing (0.1) to account for possible mistakes that occur in the data between the text describing the action and the wrong label.
+-   the classes (unique labels) are ordered
+-   $m$ is the number of classes found in the data
+-   each element of the vector is either a 0 or 1
+-   each element is at a position i from 0 to m
+-   an element is 1 if there is a correspondence between the element at position $i$ and the presence of the class, otherwise 0
 
-$$
-CrossEntropyLoss=−{\Sigma}^{C}​w_i​⋅y_i​⋅log(p_i​)
-$$ with **p** as a probability vector, computed as: $$
-p_c= \left[\Sigma_{j=1}^{n}j\right]^{-1} , {\forall} {c} \in [1, ..., C]
-$$
+The hot-encoded label vector requires a special loss. In the model a Binary Cross Entropy loss is used. Binary does not refer to two classes.
+
+$\ell_{BCE}=-\frac{1}{N}\sum^N_{i=1}[y_i ~ log ~ \sigma(x_i) + (1-y_i)log(1-\sigma(x_i)]$
+
+Where $x_i$ is one raw logit output of the model, $y_i$ is the true label (one hot encoded). The raw outputs get transformed to probabilities using sigmoid activation $\sigma$.
 
 The metric of evaluation for the performance is micro F1 score, with - Weights (computed on the frequency of classes in the sample)
 
@@ -90,23 +102,16 @@ $$ In a multiclass setting, true positives are one entry vs the rest, divided in
 -   $\text{FP}_i$: False Positive for class $i$
 -   $\text{FN}_i$: False Negative for class $i$
 
-Additionally, also standard multiclass accuracy is recorded.
+Since the output of the test set prediction is saved from the ```train.py``` in a csv file, the ultimate tests can be chosen ad hoc.
+For multilabel problems, I use sci-kit learn's [special metric module](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html) specified for multilabel problems.
 
-At each step of the training, all the metric were logged into WANDB (Weights & Biases). There are multiple sections that can be unfrozen for that matter, like:
-
-```         
-# WANDB config
-#project_name = P1
-#wandb.init(project="{project_name}", name=f"{name}", config={})
-```
+At each epoch of the training, the performance is evaluated on the validation set. Each observation is a list of metrics. It is also saved as a csv file. 
 
 ## End of training
 
 The F1 score on test data is printed out in the terminal at the end of the process.
 
 If the data is compatible and the choice of parameters does not raise any errors, the training will come to an end, and train.py will automatically save the model configuration (model architecture, weights, etc.) in `/tuned_model`.
-
-The results of training can be further analyzed from the output file inside `/results` that contains the predictions on the test set and the ground truth, along with the positions of the test set observations that represent the positions of the observations in the input dataset.
 
 # Addestrare il classificatore per FamilyAudit
 

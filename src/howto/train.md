@@ -85,7 +85,7 @@ The classes are ordered $$l_{labels} = ['Mammal', 'Pet', 'Reptile'] \rightarrow 
 
 A vector for that observation is created: $$v = [0, 0, 0] $$
 
-The vector gets updated in correspondence to the presence of classes. $$ v ← [1, 1, 0] $$
+The vector gets updated in correspondence to the presence of classes. $ v ← [1, 1, 0] $
 
 The hot-encoded label vector requires a special loss. In the model a Binary Cross Entropy loss is used. Binary does not refer to two classes.
 
@@ -200,7 +200,7 @@ Viene definito l'ordine delle classi: $$l_{etichette} = ['Mammifero', 'Animale d
 
 Viene creato un vettore per l'osservazione: $$v = [0, 0, 0] $$
 
-Il vettore viene aggiornato controllando quali classi sono davvero presenti per l'osservazione: $$ v ← [1, 1, 0] $$
+Il vettore viene aggiornato controllando quali classi sono davvero presenti per l'osservazione: $ v ← [1, 1, 0] $
 
 Su una matrice di outputs è necessaria una loss speciale. Per questo problema è stata usata la Binary Cross Entropy. Binary non si riferisce a sole due classi.
 

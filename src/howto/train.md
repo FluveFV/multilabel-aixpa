@@ -82,7 +82,7 @@ In the custom data loader for multiple labels a specific feature turns a structu
 For example, the following observation "Dog" is labelled "Mammal" and "Pet" and is not "Reptile". 
 
 The classes are ordered
-$$l_{labels} = ['Mammal', 'Pet', 'Reptile'] \rightarrow_{enumerate} l_{classes} = [0, 1, 2]$$
+$$l_{labels} = ['Mammal', 'Pet', 'Reptile'] \rightarrow l_{classes} = [0, 1, 2]$$
 
 A vector for that observation is created:
 $$v = [0, 0, 0] $$
@@ -202,7 +202,7 @@ Nel dataloader fatto ad hoc per molteplici etichette, una specifica funzione ren
 Ad esempio, la seguente osservazione "Fido" appartiene alla classe "Mammifero" e "Animale da compagnia" e non è "Rettile". 
 
 Viene definito l'ordine delle classi: 
-$$l_{etichette} = ['Mammifero', 'Animale da compagnia', 'Rettile'] \rightarrow_{enumerate} l_{classi} = [0, 1, 2]$$
+$$l_{etichette} = ['Mammifero', 'Animale da compagnia', 'Rettile'] \rightarrow l_{classi} = [0, 1, 2]$$
 
 Viene creato un vettore per l'osservazione:
 $$v = [0, 0, 0] $$

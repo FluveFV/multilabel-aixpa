@@ -1,7 +1,8 @@
 # multilabel-aixpa
 🇺🇸-🏴󠁧󠁢󠁥󠁮󠁧󠁿
 
-Multilabel classifier. Multilabel indicates that it can be trained on data with multiple labels per observation, just like "dog" can be both a mammal and a pet.
+Document classifier. It has been deployed to automatically detect if the data has multiple labels per observation (_multi-label_ classification problem) or only a single label per observation (_multi-class_).
+
 
 #### Specifics and context
 -   `kind`: product-template

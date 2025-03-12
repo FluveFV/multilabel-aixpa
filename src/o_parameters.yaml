@@ -1,0 +1,841 @@
+_attn_implementation_autoset:
+    value: true
+_name_or_path:
+    value: dbmdz/bert-base-italian-xxl-uncased
+_wandb:
+    value:
+        cli_version: 0.19.8
+        m:
+            - "1": train/loss
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": train/global_step
+              "6":
+                - 3
+              "7": []
+            - "1": train/epoch
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": eval/samples_per_second
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": test/samples_per_second
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": test/precision
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": train/learning_rate
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": eval/recall
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": eval/f1
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": eval/runtime
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": test/eval_loss
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": test/recall
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": train/grad_norm
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": eval/loss
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": test/runtime
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": eval/precision
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": eval/steps_per_second
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": test/steps_per_second
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": test/loss
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": test/f1
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+        python_version: 3.10.12
+        t:
+            "1":
+                - 1
+                - 49
+                - 51
+                - 55
+            "2":
+                - 1
+                - 5
+                - 11
+                - 41
+                - 49
+                - 51
+                - 53
+                - 55
+                - 71
+                - 100
+            "3":
+                - 7
+                - 13
+                - 16
+                - 19
+                - 23
+                - 55
+                - 62
+                - 66
+            "4": 3.10.12
+            "5": 0.19.8
+            "8":
+                - 5
+            "9":
+                "1": transformers_trainer
+            "12": 0.19.8
+            "13": linux-x86_64
+accelerator_config:
+    value:
+        dispatch_batches: null
+        even_batches: true
+        gradient_accumulation_kwargs: null
+        non_blocking: false
+        split_batches: false
+        use_seedable_sampler: true
+adafactor:
+    value: false
+adam_beta1:
+    value: 0.9
+adam_beta2:
+    value: 0.999
+adam_epsilon:
+    value: 1e-08
+add_cross_attention:
+    value: false
+architectures:
+    value:
+        - BertForMaskedLM
+attention_probs_dropout_prob:
+    value: 0.1
+auto_find_batch_size:
+    value: false
+average_tokens_across_devices:
+    value: false
+bad_words_ids:
+    value: null
+batch_eval_metrics:
+    value: false
+begin_suppress_tokens:
+    value: null
+bf16:
+    value: false
+bf16_full_eval:
+    value: false
+bos_token_id:
+    value: null
+chunk_size_feed_forward:
+    value: 0
+classifier_dropout:
+    value: null
+cross_attention_hidden_size:
+    value: null
+data_seed:
+    value: null
+dataloader_drop_last:
+    value: false
+dataloader_num_workers:
+    value: 0
+dataloader_persistent_workers:
+    value: false
+dataloader_pin_memory:
+    value: true
+dataloader_prefetch_factor:
+    value: null
+ddp_backend:
+    value: null
+ddp_broadcast_buffers:
+    value: null
+ddp_bucket_cap_mb:
+    value: null
+ddp_find_unused_parameters:
+    value: null
+ddp_timeout:
+    value: 1800
+debug:
+    value: []
+decoder_start_token_id:
+    value: null
+deepspeed:
+    value: null
+disable_tqdm:
+    value: false
+dispatch_batches:
+    value: null
+diversity_penalty:
+    value: 0
+do_eval:
+    value: true
+do_predict:
+    value: false
+do_sample:
+    value: false
+do_train:
+    value: false
+early_stopping:
+    value: false
+encoder_no_repeat_ngram_size:
+    value: 0
+eos_token_id:
+    value: null
+eval_accumulation_steps:
+    value: null
+eval_delay:
+    value: 0
+eval_do_concat_batches:
+    value: true
+eval_on_start:
+    value: false
+eval_steps:
+    value: null
+eval_strategy:
+    value: epoch
+eval_use_gather_object:
+    value: false
+evaluation_strategy:
+    value: epoch
+exponential_decay_length_penalty:
+    value: null
+finetuning_task:
+    value: null
+forced_bos_token_id:
+    value: null
+forced_eos_token_id:
+    value: null
+fp16:
+    value: false
+fp16_backend:
+    value: auto
+fp16_full_eval:
+    value: false
+fp16_opt_level:
+    value: O1
+fsdp:
+    value: []
+fsdp_config:
+    value:
+        min_num_params: 0
+        xla: false
+        xla_fsdp_grad_ckpt: false
+        xla_fsdp_v2: false
+fsdp_min_num_params:
+    value: 0
+fsdp_transformer_layer_cls_to_wrap:
+    value: null
+full_determinism:
+    value: false
+gradient_accumulation_steps:
+    value: 2
+gradient_checkpointing:
+    value: false
+gradient_checkpointing_kwargs:
+    value: null
+greater_is_better:
+    value: false
+group_by_length:
+    value: false
+half_precision_backend:
+    value: auto
+hidden_act:
+    value: gelu
+hidden_dropout_prob:
+    value: 0.1
+hidden_size:
+    value: 768
+hub_always_push:
+    value: false
+hub_model_id:
+    value: null
+hub_private_repo:
+    value: null
+hub_strategy:
+    value: every_save
+hub_token:
+    value: <HUB_TOKEN>
+id2label:
+    value:
+        "11630707": 1
+        "11630708": 2
+        "11630709": 3
+        "11630710": 4
+        "11630711": 5
+        "11630712": 6
+        "11630713": 7
+        "11630714": 8
+        "11630715": 9
+        "11630716": 10
+        "11630717": 11
+        "11630718": 12
+        "11630719": 13
+        "11630720": 14
+        "11630721": 15
+        "11630722": 16
+        "11630723": 17
+        "11630724": 18
+        "11630725": 19
+        "11630726": 20
+        "11630727": 21
+        "11630728": 22
+        "11630729": 23
+        "11630730": 24
+        "11630731": 25
+        "11630732": 26
+        "11630733": 27
+        "11630734": 28
+        "11630735": 29
+        "11630736": 30
+        "11630737": 31
+        "11630738": 32
+        "11630739": 33
+        "11630740": 43
+        "11630741": 35
+        "11630742": 36
+        "11630743": 37
+        "11630744": 38
+        "11630745": 39
+        "11630746": 40
+        "11630747": 41
+        "11630748": 42
+        "11630749": 49
+        "11630750": 44
+        "11630751": 45
+        "11630752": 46
+        "11630753": 47
+        "11630754": 48
+        "11630756": 50
+        "11630757": 51
+        "11630758": 52
+        "11630759": 53
+        "11630760": 54
+        "11630761": 55
+        "11630762": 56
+        "11630763": 57
+        "11630764": 58
+        "11630765": 59
+        "11630766": 60
+        "11630767": 61
+        "11630768": 62
+        "11630769": 63
+        "11630770": 64
+        "11630771": 65
+        "11630772": 66
+        "11630773": 67
+        "11630774": 68
+        "11630775": 69
+        "11630776": 70
+        "11630777": 128
+        "11630778": 72
+        "11630779": 73
+        "11630780": 74
+        "11630781": 75
+        "11630782": 76
+        "11630783": 77
+        "11630784": 78
+        "11630785": 79
+        "11630786": 80
+        "11630787": 81
+        "11630788": 82
+        "11630789": 83
+        "11630790": 84
+        "11630791": 85
+        "11630792": 86
+        "11630793": 87
+        "11630794": 88
+        "11630795": 89
+        "11630796": 90
+        "11630797": 91
+        "11630798": 92
+        "11630799": 93
+        "11630800": 94
+        "11630801": 95
+        "11630802": 96
+        "11630803": 97
+        "11630804": 98
+        "11630805": 99
+        "11630806": 100
+        "11630807": 101
+        "11630808": 102
+        "11630809": 103
+        "11630810": 104
+        "11630811": 105
+        "11630812": 106
+        "11630813": 107
+        "11630814": 108
+        "11630815": 109
+        "11630816": 110
+        "11630817": 111
+        "11630818": 112
+        "11630819": 113
+        "11630820": 114
+        "11630821": 115
+        "11630822": 116
+        "11630823": 117
+        "11630824": 118
+        "11630825": 119
+        "11630826": 120
+        "11630827": 121
+        "11630828": 122
+        "11630829": 123
+        "11630830": 124
+        "28344979": 34
+        "28344981": 125
+        "28344996": 126
+        "28344998": 127
+        "28345003": 129
+        "28345013": 71
+        "28345016": 130
+        "44333554": 131
+        "44333557": 132
+        "44333592": 0
+ignore_data_skip:
+    value: false
+include_for_metrics:
+    value: []
+include_inputs_for_metrics:
+    value: false
+include_num_input_tokens_seen:
+    value: false
+include_tokens_per_second:
+    value: false
+initializer_range:
+    value: 0.02
+intermediate_size:
+    value: 3072
+is_decoder:
+    value: false
+is_encoder_decoder:
+    value: false
+jit_mode_eval:
+    value: false
+label_names:
+    value:
+        - labels
+label_smoothing_factor:
+    value: 0
+label2id:
+    value:
+        "0": 44333592
+        "1": 11630707
+        "2": 11630708
+        "3": 11630709
+        "4": 11630710
+        "5": 11630711
+        "6": 11630712
+        "7": 11630713
+        "8": 11630714
+        "9": 11630715
+        "10": 11630716
+        "11": 11630717
+        "12": 11630718
+        "13": 11630719
+        "14": 11630720
+        "15": 11630721
+        "16": 11630722
+        "17": 11630723
+        "18": 11630724
+        "19": 11630725
+        "20": 11630726
+        "21": 11630727
+        "22": 11630728
+        "23": 11630729
+        "24": 11630730
+        "25": 11630731
+        "26": 11630732
+        "27": 11630733
+        "28": 11630734
+        "29": 11630735
+        "30": 11630736
+        "31": 11630737
+        "32": 11630738
+        "33": 11630739
+        "34": 28344979
+        "35": 11630741
+        "36": 11630742
+        "37": 11630743
+        "38": 11630744
+        "39": 11630745
+        "40": 11630746
+        "41": 11630747
+        "42": 11630748
+        "43": 11630740
+        "44": 11630750
+        "45": 11630751
+        "46": 11630752
+        "47": 11630753
+        "48": 11630754
+        "49": 11630749
+        "50": 11630756
+        "51": 11630757
+        "52": 11630758
+        "53": 11630759
+        "54": 11630760
+        "55": 11630761
+        "56": 11630762
+        "57": 11630763
+        "58": 11630764
+        "59": 11630765
+        "60": 11630766
+        "61": 11630767
+        "62": 11630768
+        "63": 11630769
+        "64": 11630770
+        "65": 11630771
+        "66": 11630772
+        "67": 11630773
+        "68": 11630774
+        "69": 11630775
+        "70": 11630776
+        "71": 28345013
+        "72": 11630778
+        "73": 11630779
+        "74": 11630780
+        "75": 11630781
+        "76": 11630782
+        "77": 11630783
+        "78": 11630784
+        "79": 11630785
+        "80": 11630786
+        "81": 11630787
+        "82": 11630788
+        "83": 11630789
+        "84": 11630790
+        "85": 11630791
+        "86": 11630792
+        "87": 11630793
+        "88": 11630794
+        "89": 11630795
+        "90": 11630796
+        "91": 11630797
+        "92": 11630798
+        "93": 11630799
+        "94": 11630800
+        "95": 11630801
+        "96": 11630802
+        "97": 11630803
+        "98": 11630804
+        "99": 11630805
+        "100": 11630806
+        "101": 11630807
+        "102": 11630808
+        "103": 11630809
+        "104": 11630810
+        "105": 11630811
+        "106": 11630812
+        "107": 11630813
+        "108": 11630814
+        "109": 11630815
+        "110": 11630816
+        "111": 11630817
+        "112": 11630818
+        "113": 11630819
+        "114": 11630820
+        "115": 11630821
+        "116": 11630822
+        "117": 11630823
+        "118": 11630824
+        "119": 11630825
+        "120": 11630826
+        "121": 11630827
+        "122": 11630828
+        "123": 11630829
+        "124": 11630830
+        "125": 28344981
+        "126": 28344996
+        "127": 28344998
+        "128": 11630777
+        "129": 28345003
+        "130": 28345016
+        "131": 44333554
+        "132": 44333557
+layer_norm_eps:
+    value: 1e-12
+learning_rate:
+    value: 0.00015
+length_column_name:
+    value: length
+length_penalty:
+    value: 1
+load_best_model_at_end:
+    value: true
+local_rank:
+    value: 0
+log_level:
+    value: passive
+log_level_replica:
+    value: warning
+log_on_each_node:
+    value: true
+logging_dir:
+    value: multi_label_classification/runs/Mar12_13-18-51_b35f4d846281
+logging_first_step:
+    value: false
+logging_nan_inf_filter:
+    value: true
+logging_steps:
+    value: 500
+logging_strategy:
+    value: epoch
+lr_scheduler_type:
+    value: linear
+max_grad_norm:
+    value: 1
+max_length:
+    value: 20
+max_position_embeddings:
+    value: 512
+max_steps:
+    value: -1
+metric_for_best_model:
+    value: eval_loss
+min_length:
+    value: 0
+model/num_parameters:
+    value: 110797957
+model_type:
+    value: bert
+mp_parameters:
+    value: ""
+neftune_noise_alpha:
+    value: null
+no_cuda:
+    value: false
+no_repeat_ngram_size:
+    value: 0
+num_attention_heads:
+    value: 12
+num_beam_groups:
+    value: 1
+num_beams:
+    value: 1
+num_hidden_layers:
+    value: 12
+num_return_sequences:
+    value: 1
+num_train_epochs:
+    value: 50
+optim:
+    value: adamw_torch
+optim_args:
+    value: null
+optim_target_modules:
+    value: null
+output_attentions:
+    value: false
+output_dir:
+    value: multi_label_classification
+output_hidden_states:
+    value: false
+output_scores:
+    value: false
+overwrite_output_dir:
+    value: false
+pad_token_id:
+    value: 0
+past_index:
+    value: -1
+per_device_eval_batch_size:
+    value: 8
+per_device_train_batch_size:
+    value: 8
+per_gpu_eval_batch_size:
+    value: null
+per_gpu_train_batch_size:
+    value: null
+position_embedding_type:
+    value: absolute
+prediction_loss_only:
+    value: false
+prefix:
+    value: null
+problem_type:
+    value: multi_label_classification
+push_to_hub:
+    value: false
+push_to_hub_model_id:
+    value: null
+push_to_hub_organization:
+    value: null
+push_to_hub_token:
+    value: <PUSH_TO_HUB_TOKEN>
+ray_scope:
+    value: last
+remove_invalid_values:
+    value: false
+remove_unused_columns:
+    value: true
+repetition_penalty:
+    value: 1
+report_to:
+    value:
+        - tensorboard
+        - wandb
+restore_callback_states_from_checkpoint:
+    value: false
+resume_from_checkpoint:
+    value: false
+return_dict:
+    value: true
+return_dict_in_generate:
+    value: false
+run_name:
+    value: multi_label_classification25_03_12-13_18_51
+save_on_each_node:
+    value: false
+save_only_model:
+    value: false
+save_safetensors:
+    value: true
+save_steps:
+    value: 500
+save_strategy:
+    value: epoch
+save_total_limit:
+    value: 1
+seed:
+    value: 42
+sep_token_id:
+    value: null
+skip_memory_metrics:
+    value: true
+split_batches:
+    value: null
+suppress_tokens:
+    value: null
+task_specific_params:
+    value: null
+temperature:
+    value: 1
+tf_legacy_loss:
+    value: false
+tf32:
+    value: null
+tie_encoder_decoder:
+    value: false
+tie_word_embeddings:
+    value: true
+tokenizer_class:
+    value: null
+top_k:
+    value: 50
+top_p:
+    value: 1
+torch_compile:
+    value: false
+torch_compile_backend:
+    value: null
+torch_compile_mode:
+    value: null
+torch_dtype:
+    value: float32
+torch_empty_cache_steps:
+    value: null
+torchdynamo:
+    value: null
+torchscript:
+    value: false
+tpu_metrics_debug:
+    value: false
+tpu_num_cores:
+    value: null
+transformers_version:
+    value: 4.49.0
+type_vocab_size:
+    value: 2
+typical_p:
+    value: 1
+use_bfloat16:
+    value: false
+use_cache:
+    value: true
+use_cpu:
+    value: false
+use_ipex:
+    value: false
+use_legacy_prediction_loop:
+    value: false
+use_liger_kernel:
+    value: false
+use_mps_device:
+    value: false
+vocab_size:
+    value: 32102
+warmup_ratio:
+    value: 0.2
+warmup_steps:
+    value: 0
+weight_decay:
+    value: 0.001

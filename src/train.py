@@ -1,5 +1,6 @@
 ## based on code from: https://huggingface.co/blog/Valerii-Knowledgator/multi-label-classification
-
+import time
+import datasets
 from datasets import load_dataset, ClassLabel, DatasetDict
 import torch
 import os
@@ -16,14 +17,14 @@ import wandb
 os.environ["TOKENIZERS_PARALLELISM"] = 'false'
 os.environ['PYTORCH_CUDA_ALLOC_CONF']="expandable_segments:True"
 
-project_name = "Feb25"
-wandb.init(project=f"{project_name}", name=f"multilabel_raw", config={})
+project_name = "Mar25"
+wandb.init(project=f"{project_name}", name=f"bbi_poly_scheduler_aziende", config={})
 
 from transformers import AutoTokenizer
 #📂
 class Dataloader:
-    def __init__(self, file_path, test_size=0.2, val_size=0.25, random_state=25,
-                 model_path='microsoft/deberta-v3-small', **kwargs):
+    def __init__(self, file_path, test_size=0.2, val_size=0.18, random_state=25,
+                 model_path='microsoft/deberta-large', **kwargs):
         '''
         Args:
             file_path (str): Path to the file.
@@ -46,10 +47,13 @@ class Dataloader:
         self.dataset = None
         self.class_weights = None
         self.label_columns = None
+        self.problem_type = None
+        self.label_column_names = None
 
         self.run()
         # printing example of data
-        print(self.dataset['train'][-2])
+        print(self.dataset['train'][0]) #D
+        #print(torch.tensor(self.dataset["train"][-2]["labels"]).shape)
 
     def load_data(self):
         loaders = ["json", "csv", "gzip"]
@@ -132,16 +136,17 @@ class Dataloader:
         Tokenize text, while labels get one-hot encoded
         '''
         text = example["text"]
-        all_labels = example['all_labels']
+        example = self.tokenizer(text, truncation=True, max_length=512)
+        return example
 
+    def hot_encoding(self, example):
+        all_labels = example['all_labels']
         labels = [0. for i in range(self.num_classes)]
         for i in all_labels:
             labels[int(i)] = 1.
             # On an N-length vector where N is the number of classes,
-            # the position corrispondent to class i becomes 1 if in the data it is so.
-
-        example = self.tokenizer(text)
-        example["labels"] = labels  # vector added to tokenized element
+            # the position correspondent to class "i" becomes 1, the rest is 0
+        example["labels"] = labels # vector added to tokenized element
         return example
 
     def run(self):
@@ -159,18 +164,48 @@ class Dataloader:
         # splitting into train and test
         self.stratified_split()
 
-        # tokenization
+        # D
+        #If there is at least one observation with multiple labels, then
+        # it will be one hot encoded for Binary cross entropy loss, otherwise
+        # plain cross entropy for multiclass problems
+        multi_label_instances = list(filter(lambda x: len(x['all_labels']) > 1, self.dataset['train']))
+
+        if len(multi_label_instances) > 1:
+            self.problem_type = 'multi_label_classification'
+            self.dataset['train'] = self.dataset['train'].map(self.hot_encoding)
+            self.dataset['test'] = self.dataset['test'].map(self.hot_encoding)
+            self.label_column_names = 'labels'
+
+        else:
+            self.problem_type = 'single_label_classification'
+            self.label_column_names = 'label'
+            #self.dataset['train'] = self.dataset['train'].rename_column('all_labels', 'labels')
+
         self.dataset['train'] = self.dataset['train'].map(self.tokenizing)
+
         self.dataset['test'] = self.dataset['test'].map(self.tokenizing)
 
-model_path = 'microsoft/deberta-v3-small'
+        print(f'Classification problem identified as {self.problem_type}')
+        print()
 
-dl = Dataloader(file_path='data/addestramento_d.csv', model_path=model_path)
+####### Change model here ########################
+model_path = 'dbmdz/bert-base-italian-xxl-uncased'
+##################################################
+
+###### Change input data here ####################
+datasets.disable_progress_bars()
+file_path = 'data/addestramento_aziende.csv'
+dl = Dataloader(file_path=file_path, model_path=model_path)
+print('Dataset in use:', file_path)
+##################################################
+
 tokenized_dataset = dl.dataset
 num_classes = dl.num_classes
 id2class = dl.id2class
 class2id = dl.class2id
 tokenizer = dl.tokenizer
+problem_type = dl.problem_type
+label_names = dl.label_column_names
 
 from transformers import DataCollatorWithPadding
 
@@ -192,31 +227,67 @@ def dataframe_append(directory, data_filename, row):
 def sigmoid(x):
    return 1/(1 + np.exp(-x))
 
-def compute_metrics(eval_pred):
-    clf_metrics = evaluate.combine(["f1", "accuracy", "precision", "recall"])
-    predictions, labels = eval_pred
-    predictions = sigmoid(predictions)
-    predictions = (predictions > 0.5).astype(int).reshape(-1)
+from torch import nn
+import torch.nn.functional as F
+
+def compute_metrics(eval_pred, model_dir="./model"):
+    result = {}
+    metrics = ['precision', 'recall', 'f1']
+
+    if problem_type == 'multi_label_classification':  #problem_type is a global var
+        logits, labels = eval_pred
+        probabilities = sigmoid(logits)
+        #for this loss, documentation indicates normalized logits (probabilities)
+        bce_loss = F.binary_cross_entropy(torch.tensor(probabilities), torch.tensor(labels), reduction="mean").item()
+        result['eval_loss'] = bce_loss
+
+        #for performance metrics we need the labels predicted
+        predictions = (probabilities > 0.3).astype(int)
+        for i in metrics:
+            metric_function = evaluate.load(i, "multilabel")
+            result[i] = metric_function.compute(
+                predictions=predictions,
+                references=labels,
+                average='weighted'
+            )[i]
+
+    elif problem_type == 'single_label_classification':
+        logits, labels = eval_pred
+        logits = torch.tensor(logits)
+        labels = torch.tensor(labels)
+        softmax = nn.Softmax(dim=-1)
+        probabilities = softmax(logits)
+        predictions = torch.argmax(probabilities, dim=-1)
+        #for this loss, documentation indicates unnormalized output (logits)
+        ce_loss = F.cross_entropy(logits, labels, reduction="mean").item()
+        result['eval_loss'] = ce_loss
+
+        for i in metrics:
+            metric_function = evaluate.load(i, "multiclass")
+            result[i] = metric_function.compute(
+                predictions=predictions,
+                references=labels,
+                average='weighted'
+            )[i]
+
+    #print(f"Logits shape: {logits.shape}, Labels shape: {labels.shape}")  # D
+
+    row = pd.DataFrame({k: [round(v, 5)] for k, v in result.items()})
     if not path.exists(model_dir):
         makedirs(model_dir)
     data_filename = 'train_metrics.csv'
-    result = clf_metrics.compute(predictions=predictions, references=labels.astype(int).reshape(-1))
-    row = pd.DataFrame({k: [v] for k, v in result.items()})
-
     dataframe_append(directory=model_dir, data_filename=data_filename, row=row)
 
     return result
 
-from transformers import AutoModelForSequenceClassification, TrainingArguments, Trainer
+from transformers import AutoModelForSequenceClassification, TrainingArguments, Trainer, EarlyStoppingCallback
 
 model = AutoModelForSequenceClassification.from_pretrained(
     model_path, num_labels=num_classes,
     id2label=id2class, label2id=class2id,
-    problem_type = "multi_label_classification")
+    problem_type=problem_type)
 
-model.gradient_checkpointing_enable()
-
-model_dir = 'DeBERTa'
+model_dir = problem_type
 
 if not path.exists(model_dir):
     makedirs(model_dir)
@@ -224,28 +295,34 @@ else:
     print('Overwriting existing checkpoints')
 
 training_args = TrainingArguments(
+    run_name = model_dir + time.strftime("%y_%m_%d-%H_%M_%S", time.localtime()),
     output_dir=model_dir,
-    learning_rate=1e-5,
-    per_device_train_batch_size=4,
-    per_device_eval_batch_size=4,
+    per_device_train_batch_size=8,
+    per_device_eval_batch_size=8,
     gradient_accumulation_steps=2,
-    num_train_epochs=25,
-    #max_steps=1, #D
-    weight_decay=0.005,
-    eval_strategy="epoch",
+    num_train_epochs=50,
+    max_steps=-1, #for debugging, remove minus sign
+    evaluation_strategy="epoch",
     save_strategy="epoch",
     logging_strategy="epoch",
-    save_total_limit=3,
+    weight_decay=1e-3,
+    save_total_limit=1,
+    metric_for_best_model = "eval_loss",
     load_best_model_at_end=True,
+    fp16=False,
+    warmup_ratio=0.2,
+    learning_rate=1.5e-4,
+    lr_scheduler_type="linear",
     #report_to=None,  #Wandb and other are excluded with this setting
-    fp16=True,
-    optim="adamw_torch_fused",
-    # parallel computing parameters (GPU)
+    # Parallel computing parameters (GPU)
     #dataloader_num_workers = 4,
     #ddp_find_unused_parameters=False,
     #ddp_backend='nccl',
     resume_from_checkpoint = False
 )
+
+if problem_type=='multi_label_classification':
+    training_args.label_names = [label_names]  #by adding a specific column name it avoids a known bug in transformers
 
 trainer = Trainer(
     model=model,
@@ -255,12 +332,14 @@ trainer = Trainer(
     tokenizer=tokenizer,
     data_collator=data_collator,
     compute_metrics=compute_metrics,
+    callbacks=[EarlyStoppingCallback(early_stopping_patience=15)]
 )
+
 print("Starting training...")
 trainer.train()
 print("Training finished")
-
-final_path = f'{model_dir}/multiclassifier_config'
+trainer.evaluate()
+final_path = f'{model_dir}/'
 print()
 print(f"Model is being saved to dir: {final_path}")
 print()
@@ -269,8 +348,10 @@ if not path.exists(final_path):
 else:
     print('Overwriting previously saved model')
 
-trainer.save_model(final_path + 'model')
-tokenizer.save_pretrained(final_path + 'tokenizer')
+trainer._load_best_model()
+
+trainer.save_model(final_path + 'model_config')
+tokenizer.save_pretrained(final_path + 'tokenizer_config')
 
 test_prediction = trainer.predict(tokenized_dataset['test'])
 logits = test_prediction.predictions
@@ -279,6 +360,9 @@ probabilities = sigmoid(logits)
 
 predicted_labels = (probabilities > 0.3).astype(int)
 print(f'Test predictions are saved in {model_dir}/predictions.csv')
-pd.DataFrame({"true_labels": true_labels.tolist(),
-              "predicted_labels": predicted_labels.tolist()
-              }).to_csv(model_dir + '/predictions.csv', index=False)
+pd.DataFrame({
+    "true_labels": true_labels.tolist(),
+    "predicted_labels": predicted_labels.tolist(),
+    "probabilities": probabilities.tolist()
+}).to_csv(model_dir + '/predictions.csv', index=False)
+

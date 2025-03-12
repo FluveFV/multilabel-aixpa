@@ -20,6 +20,7 @@ At the time of writing, this ```README``` is structured on similar tools such as
 
 -   [Preprocess corpora for training](./src/howto/preprocess.ipynb)
 -   [Train the classifier model](./src/howto/train.md)
+-   [Predict a new observation](./src/howto/predict.md)
 
 #### Training data
 All of the data is available on request. However, organizations' data is private, while Municipalities data is of public domain. 

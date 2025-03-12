@@ -21,6 +21,8 @@ At the time of writing, this ```README``` is structured on similar tools such as
 -   [Preprocess corpora for training](./src/howto/preprocess.ipynb)
 -   [Train the classifier model](./src/howto/train.md)
 -   [Predict a new observation](./src/howto/predict.md)
+-   [Optimal parameters for Municipalities data](./src/m_parameters.yaml)
+-   [Optimal parameters for Organizations data](./src/o_parameters.yaml)
 
 #### Training data
 All of the data is available on request. However, organizations' data is private, while Municipalities data is of public domain. 
@@ -47,6 +49,9 @@ Al momento della stesura, questo ```README``` è strutturato su strumenti simili
 
 -   [Processare i testi per addestramento](./src/howto/preprocess.ipynb)
 -   [Addestrare il modello classificatore](./src/howto/train.md)
+-   [Predire una nuova osservazione](./src/howto/predict.md)
+-   [Parametri ottimali per dati comunali](./src/m_parameters.yaml)
+-   [Parametri ottimali per dati organizzativi](./src/o_parameters.yaml)
 
 #### Dati di addestramento
 La versione integrale dei dati è disponibile su richiesta. I dati delle organizzazioni private non sono di dominio pubblico, mentre per i dati dei Comuni lo sono a fini di trasparenza amministrativa. 

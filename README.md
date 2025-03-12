@@ -21,6 +21,9 @@ At the time of writing, this ```README``` is structured on similar tools such as
 -   [Preprocess corpora for training](./src/howto/preprocess.ipynb)
 -   [Train the classifier model](./src/howto/train.md)
 
+#### Training data
+All of the data is available on request. However, organizations' data is private, while Municipalities data is of public domain. 
+
 ---
 🇮🇹 ITALIAN
 
@@ -37,3 +40,12 @@ Il classificatore è addestrato su dati comunali e separatamente su dati _Family
 Questo strumento può essere usato per ogni task di classificazione di testo. Lo script ```training.py``` si occuperà di ogni numero di etichette sui nuovi dati, solo se i dati sono formattati in un modo specifico. Una volta addestrato e data una nuova osservazione, il modello addestrato può inferire le etichette che appartengono ad essa. I dettagli per preparare i dati sono spiegati nella sezione ```How To```, incluso l'addestramento per il classificatore su nuovi dati.
 
 Al momento della stesura, questo ```README``` è strutturato su strumenti simili come [Faudit Classifier](https://github.com/FluveFV/faudit-classifier), anche se quest'ultimo può solo essere addestrato con un'etichetta per osservazione.
+
+
+### How To
+
+-   [Processare i testi per addestramento](./src/howto/preprocess.ipynb)
+-   [Addestrare il modello classificatore](./src/howto/train.md)
+
+#### Dati di addestramento
+La versione integrale dei dati è disponibile su richiesta. I dati delle organizzazioni private non sono di dominio pubblico, mentre per i dati dei Comuni lo sono a fini di trasparenza amministrativa. 

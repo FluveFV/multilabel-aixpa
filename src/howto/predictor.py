@@ -53,6 +53,8 @@ def sigmoid(x):  #necessary for multilabel
 
 threshold = float(input("Enter problem activation threshold (close to 0.1 for organization data, close to 0.7 for municipalities data):"))
 
+temperature = float(input("Enter temperature (higher values soften predictions, lower values make them sharper):"))
+
 new_example = '''
 sito internet . realizzare il sito internet ed attivar, dal punto di vista tecnico, 
 i link a siti di interesse per la conciliazione e creazione di un'area tematica 
@@ -63,9 +65,9 @@ per visitatori sito che per dipendenti
 
 inputs = tokenizer([new_example], return_tensors="pt", truncation=True, padding=True, max_length=512)
 with torch.no_grad():
-    logits = model(**inputs).logits
+    logits = model(**inputs).logits.numpy() / temperature
 
-probabilities = sigmoid(logits.numpy())
+probabilities = sigmoid(logits)
 
 predicted_labels = (probabilities > threshold).astype(int).tolist()
 

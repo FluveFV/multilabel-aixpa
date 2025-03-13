@@ -6,7 +6,7 @@ Two arguments can be specified:
 
 The main elements of said scripts are divided in:
 
--   loading the model weights and architecture for prediction from `bert_wrapper.py` and the model + tokenizer config in directory `multi_label_classification` or `single_label_classification`, depending on what your data looks like.
+-   loading the model weights and architecture for prediction from `train.py` and the model + tokenizer config in directory `multi_label_classification` or `single_label_classification`, depending on what your data looks like.
 -   predicting a random example's observation
 
 Important notice: to connect to a different model for appropriate data, you need to modify the path connecting the model and tokenizer configuration. For example,
@@ -38,6 +38,4 @@ with torch.no_grad():
     logits = model(**inputs).logits.numpy() / temperature
 ```
 
-For values of `temperature` greater than $1$, the predictions will be softened, while smaller than $1$ they will be sharpened.
-
-The user can test more texts. There is no lower or upper limit to the size of the input, but the BERT will only use the first 512 tokenized elements of the text.
+For values of `temperature` greater than $1$, the predictions will be softened, while smaller than $1$ they will be sharpened. The user can test more texts. There is no lower or upper limit to the size of the input, but the BERT will only use the first 512 tokenized elements of the text.

@@ -27,6 +27,21 @@ At the time of writing, this ```README``` is structured on similar tools such as
 #### Training data
 All of the data is available on request. However, organizations' data is private, while Municipalities data is of public domain. 
 
+
+### Known behavior for prediction
+
+Trained models have different behavior depending on the type of data they were trained on. It is known that 
+
+- if a BERT-base italian xxl uncased model has been trained on a singlelabel multiclass dataset, its predictions are more confident than usual, therefore making it necessary to set an activation threshold higher than $0.5$
+- if a BERT-base italian xxl uncased model has been trained on multilabel data, its predictions are less confident than usual, making it necessary to set an activation threshold lower than $0.5$
+
+##### Recommendation: 
+For a **Precision of 75%**, we advise that:
+- the single label multiclass classifier predicts observations using an activation function (e.g. sigmoid) with a threshold of $0.97$
+- the multilabel classifier predicts observations using an activation function with a threshold of $0.44$
+
+Otherwise, it is possible to just use temperature scaling for the predictions with a typical threshold, such as $0.5$
+
 ---
 🇮🇹 ITALIAN
 
@@ -55,3 +70,16 @@ Al momento della stesura, questo ```README``` è strutturato su strumenti simili
 
 #### Dati di addestramento
 La versione integrale dei dati è disponibile su richiesta. I dati delle organizzazioni private non sono di dominio pubblico, mentre per i dati dei Comuni lo sono a fini di trasparenza amministrativa. 
+
+### Comportamento conosciuto nella predizione
+Modelli addestrati differentemente hanno comportamenti dipendenti dal tipo di dati sui quali sono addestrati. È provato che:
+
+- se un modello BERT-base italian xxl uncased è stato addestrato su un dataset multiclasse con una singola etichetta per osservazione, le sue predizioni sono più confidenti del solito, per cui è necessario impostare una soglia di attivazione maggiore di $0.5$
+- se un modello BERT-base italian xxl uncased è stato addestrato su dati multietichetta, le sue predizioni sono meno confidenti del solito, rendendo necessario impostare una soglia di attivazione minore di $0.5$. 
+
+##### Raccomandazione: 
+For a **Precision of 75%**, we advise that:
+- il classificatore multiclasse singola etichetta può predire osservazioni usando una soglia nella funzione (e.g. sigmoidea) di $0.97$
+- il classificatore multietichetta può predire osservazioni usando una soglia di $0.44$
+
+Altrimenti, è possibile scalare le osservazioni usando il ridimensionamento tramite temperatura e usare una tipica soglia come $0.5$. 

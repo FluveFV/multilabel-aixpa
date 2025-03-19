@@ -78,7 +78,7 @@ Modelli addestrati differentemente hanno comportamenti dipendenti dal tipo di da
 - se un modello BERT-base italian xxl uncased è stato addestrato su dati multietichetta, le sue predizioni sono meno confidenti del solito, rendendo necessario impostare una soglia di attivazione minore di $0.5$. 
 
 ##### Raccomandazione: 
-For a **Precision of 75%**, we advise that:
+Per una **precisione del 75%**, si raccomanda che:
 - il classificatore multiclasse singola etichetta può predire osservazioni usando una soglia nella funzione (e.g. sigmoidea) di $0.97$
 - il classificatore multietichetta può predire osservazioni usando una soglia di $0.44$
 

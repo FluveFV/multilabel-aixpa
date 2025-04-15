@@ -39,3 +39,7 @@ with torch.no_grad():
 ```
 
 For values of `temperature` greater than $1$, the predictions will be softened, while smaller than $1$ they will be sharpened. The user can test more texts. There is no lower or upper limit to the size of the input, but the BERT will only use the first 512 tokenized elements of the text.
+
+### Miscellaneous
+If you are using the data from the **AIxPA Famiglia project**, you can use the correspondence.csv files found [here](https://github.com/FluveFV/multilabel-aixpa/tree/main/src) (depending on which data you're using) to map the output of the model to its _sister taxonomies_, namely the macrocategory and the field category. 
+

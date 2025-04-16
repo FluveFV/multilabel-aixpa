@@ -117,6 +117,12 @@ The F1 score on test data is printed out in the terminal at the end of the proce
 
 If the data is compatible and the choice of parameters does not raise any errors, the training will come to an end, and train.py will automatically save the model configuration (model architecture, weights, etc.).
 
+## Expected behavior on PA data
+
+For a threshold of $Precision = 0.75$, this is where the $Recall$ of the model lies
+
+![best_thresholds](https://github.com/user-attachments/assets/0eeda888-468e-4da7-bff2-5a9b59e26b51)
+
 # Addestrare il classificatore per FamilyAudit
 
 In caso di nuovi dati si consiglia di leggere le specifiche della [preparazione dati](https://github.com/FluveFV/multilabel-aixpa/blob/main/src/howto/preprocess.ipynb).
@@ -231,3 +237,9 @@ La misura F1 è stampata nel terminale al termine del processo.
 Se i dati sono compatibili e la scelta dei parametri non porta a nessun errore, l'addestramento sarà portato a termine e `train_py` salva automaticamente la configurazione del modello per altre attività downstream (architettura del modello, pesi, etc.).
 
 I risultati dell'addestramento possono essere analizzati (magari sotto altre metriche) nel file di output che contiene le predizioni del modello sul test set e la ground truth, assieme agli indici delle osservazioni del test set che rappresentano la loro posizione nel dataset di input.
+
+## Comportamento atteso su dati della PA
+
+Per una soglia di $Precision = 0.75$, il $Recall$ giace: 
+
+![best_thresholds](https://github.com/user-attachments/assets/0eeda888-468e-4da7-bff2-5a9b59e26b51)

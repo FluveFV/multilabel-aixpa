@@ -1,4 +1,47 @@
 # multilabel-aixpa
+
+🇮🇹 ITALIAN
+
+Classificatore multietichetta per la PA e organizzazioni private. 
+Il classificatore è addestrato su dati comunali e separatamente su dati _Family in Italy_ delle organizzazioni che sono coinvolte nel marchio _Family Audit_. 
+
+È stato implementato in maniera da riconoscere automaticamente se nei dati vi sono molteplici etichette per osservazione (quindi un problema di classificazione _multietichetta_) o una singola etichetta per osservazione (problema di classificazione _multiclasse_)
+
+#### Specifiche e contesto
+- `tipologia`: product-template
+- `ai`: NLP
+- `dominio`: PA
+
+Questo strumento può essere usato per ogni task di classificazione di testo. Lo script ```training.py``` si occuperà di ogni numero di etichette sui nuovi dati, solo se i dati sono formattati in un modo specifico. Una volta addestrato e data una nuova osservazione, il modello addestrato può inferire le etichette che appartengono ad essa. I dettagli per preparare i dati sono spiegati nella sezione ```How To```, incluso l'addestramento per il classificatore su nuovi dati.
+
+Al momento della stesura, questo ```README``` è strutturato su strumenti simili come [Faudit Classifier](https://github.com/FluveFV/faudit-classifier), anche se quest'ultimo può solo essere addestrato con un'etichetta per osservazione.
+
+
+### How To
+
+-   [Processare i testi per addestramento](./src/howto/preprocess.ipynb)
+-   [Addestrare il modello classificatore](./src/howto/train.md)
+-   [Predire una nuova osservazione](./src/howto/predict.md)
+-   [Parametri ottimali per dati comunali](./src/m_parameters.yaml)
+-   [Parametri ottimali per dati organizzativi](./src/o_parameters.yaml)
+
+#### Dati di addestramento
+La versione integrale dei dati è disponibile su richiesta. I dati delle organizzazioni private non sono di dominio pubblico, mentre per i dati dei Comuni lo sono a fini di trasparenza amministrativa. 
+
+### Comportamento conosciuto nella predizione
+Modelli addestrati differentemente hanno comportamenti dipendenti dal tipo di dati sui quali sono addestrati. È provato che:
+
+- se un modello BERT-base italian xxl uncased è stato addestrato su un dataset multiclasse con una singola etichetta per osservazione, le sue predizioni sono più confidenti del solito, per cui è necessario impostare una soglia di attivazione maggiore di $0.5$
+- se un modello BERT-base italian xxl uncased è stato addestrato su dati multietichetta, le sue predizioni sono meno confidenti del solito, rendendo necessario impostare una soglia di attivazione minore di $0.5$. 
+
+##### Raccomandazione: 
+Per una **precisione del 75%**, si raccomanda che:
+- il classificatore multiclasse singola etichetta può predire osservazioni usando una soglia nella funzione (e.g. sigmoidea) di $0.97$
+- il classificatore multietichetta può predire osservazioni usando una soglia di $0.44$
+
+Altrimenti, è possibile scalare le osservazioni usando il ridimensionamento tramite temperatura e usare una tipica soglia come $0.5$. 
+
+---
 🇺🇸-🏴󠁧󠁢󠁥󠁮󠁧󠁿 ENGLISH
 
 Document classifier for Public Administration and private organizations. 
@@ -42,44 +85,3 @@ For a **Precision of 75%**, we advise that:
 
 Otherwise, it is possible to just use temperature scaling for the predictions with a typical threshold, such as $0.5$
 
----
-🇮🇹 ITALIAN
-
-Classificatore multietichetta per la PA e organizzazioni private. 
-Il classificatore è addestrato su dati comunali e separatamente su dati _Family in Italy_ delle organizzazioni che sono coinvolte nel marchio _Family Audit_. 
-
-È stato implementato in maniera da riconoscere automaticamente se nei dati vi sono molteplici etichette per osservazione (quindi un problema di classificazione _multietichetta_) o una singola etichetta per osservazione (problema di classificazione _multiclasse_)
-
-#### Specifiche e contesto
-- `tipologia`: product-template
-- `ai`: NLP
-- `dominio`: PA
-
-Questo strumento può essere usato per ogni task di classificazione di testo. Lo script ```training.py``` si occuperà di ogni numero di etichette sui nuovi dati, solo se i dati sono formattati in un modo specifico. Una volta addestrato e data una nuova osservazione, il modello addestrato può inferire le etichette che appartengono ad essa. I dettagli per preparare i dati sono spiegati nella sezione ```How To```, incluso l'addestramento per il classificatore su nuovi dati.
-
-Al momento della stesura, questo ```README``` è strutturato su strumenti simili come [Faudit Classifier](https://github.com/FluveFV/faudit-classifier), anche se quest'ultimo può solo essere addestrato con un'etichetta per osservazione.
-
-
-### How To
-
--   [Processare i testi per addestramento](./src/howto/preprocess.ipynb)
--   [Addestrare il modello classificatore](./src/howto/train.md)
--   [Predire una nuova osservazione](./src/howto/predict.md)
--   [Parametri ottimali per dati comunali](./src/m_parameters.yaml)
--   [Parametri ottimali per dati organizzativi](./src/o_parameters.yaml)
-
-#### Dati di addestramento
-La versione integrale dei dati è disponibile su richiesta. I dati delle organizzazioni private non sono di dominio pubblico, mentre per i dati dei Comuni lo sono a fini di trasparenza amministrativa. 
-
-### Comportamento conosciuto nella predizione
-Modelli addestrati differentemente hanno comportamenti dipendenti dal tipo di dati sui quali sono addestrati. È provato che:
-
-- se un modello BERT-base italian xxl uncased è stato addestrato su un dataset multiclasse con una singola etichetta per osservazione, le sue predizioni sono più confidenti del solito, per cui è necessario impostare una soglia di attivazione maggiore di $0.5$
-- se un modello BERT-base italian xxl uncased è stato addestrato su dati multietichetta, le sue predizioni sono meno confidenti del solito, rendendo necessario impostare una soglia di attivazione minore di $0.5$. 
-
-##### Raccomandazione: 
-Per una **precisione del 75%**, si raccomanda che:
-- il classificatore multiclasse singola etichetta può predire osservazioni usando una soglia nella funzione (e.g. sigmoidea) di $0.97$
-- il classificatore multietichetta può predire osservazioni usando una soglia di $0.44$
-
-Altrimenti, è possibile scalare le osservazioni usando il ridimensionamento tramite temperatura e usare una tipica soglia come $0.5$. 
